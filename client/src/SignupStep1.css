@@ -1,0 +1,101 @@
+.signup-wrapper {
+  min-height: 100vh;
+  padding: 10rem 0;
+  background-color: #f9fafb;
+}
+.signup-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.signup-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 1024px) {
+  .signup-card {
+    flex-direction: row;
+  }
+}
+.signup-left {
+  flex: 1;
+  background: #3b82f6;
+  color: white;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.signup-welcome {
+  font-size: 1.875rem;
+  margin-bottom: 1rem;
+}
+.signup-message {
+  font-size: 1rem;
+}
+.signup-right {
+  flex: 1;
+  padding: 4rem 3rem;
+}
+.signup-title {
+  font-size: 1.875rem;
+  margin-bottom: 1rem;
+}
+.signup-subtitle {
+  margin-bottom: 1.5rem;
+}
+.signup-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.signup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.signup-field {
+  margin-top: 1.25rem;
+}
+.signup-input {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
+}
+.full-width {
+  width: 100%;
+}
+
+.signup-next {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+.signup-next button {
+  width: 100%;
+  background: #3b82f6;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  cursor: pointer;
+}
+
+.login-redirect {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.login-link {
+  color: #3b82f6;
+  font-weight: 600;
+  text-decoration: none;
+}

@@ -1,15 +1,24 @@
-import { useState } from 'react'
-import Signup from './Signup'
+import { useState } from "react";
+
+import SignupWizard from "./SignupWizard"
+import { BrowserRouter, Routes, Route } from "react-router";
+import Login from "./Login";
 
 
 function App() {
-  
-
   return (
-   <div>
-     <Signup /> 
-  </div>
-  )
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/register"
+            element={<SignupWizard />}
+          ></Route>
+          <Route path="/login" element={<Login />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
-export default App
+export default App;
