@@ -6,21 +6,38 @@ import { useNavigate } from "react-router";
 
 const Signup = ({ formData, setFormData, previousStep }) => {
   const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
+  const {
+    username,
+    password,
+    confirmPassword,
+    email,
+    firstName,
+    lastName,
+    birthday,
+    biography,
+    favoriteNumber,
+    //profilePicture,
+  } = formData;
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3001/register", {
+    try {
+      const result = await axios.post("http://localhost:3001/register", {
+        username,
+        password,
+        confirmPassword,
+        email,
         firstName,
         lastName,
-        email,
-        password,
-      })
-      .then((result) => {
-        console.log(result);
-        navigate("/login");
-      })
-      .catch((err) => console.log(err));
+        birthday,
+        biography,
+        favoriteNumber,
+        //profilePicture,
+      });
+      console.log(result);
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handlePrevious = (e) => {
@@ -33,9 +50,9 @@ const Signup = ({ formData, setFormData, previousStep }) => {
       <div className="signup-container">
         <section className="signup-card">
           <aside className="signup-left">
-            <h1 className="signup-welcome">Welcome</h1>
+            <h1 className="signup-welcome">Just a few more details</h1>
             <p className="signup-message">
-              We're glad you're here. Let's get you set up.
+              Tell us a bit about yourself to complete your profile.
             </p>
           </aside>
           <main className="signup-right">

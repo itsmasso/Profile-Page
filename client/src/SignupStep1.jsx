@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SignupStep1.css";
 import { Link } from "react-router";
 
 const Signup = ({ formData, setFormData, nextStep }) => {
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({
+    email: false,
+    passwordMismatch: false,
+  });
+
+  useEffect(() => {
+    const { firstName, lastName, email, username, password } = formData;
+    const allFilled = firstName && lastName && email && username && password;
+    setIsValid(allFilled);
+  }, [formData]);
+
   const handleNext = (e) => {
     e.preventDefault();
-    nextStep();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailRegex.test(formData.email);
+    const isPasswordMatching = formData.password === formData.confirmPassword;
+    setErrors({
+      email: !isEmailValid,
+      passwordMismatch: !isPasswordMatching,
+    });
+    if (isEmailValid && isPasswordMatching) {
+      nextStep();
+    }
   };
 
   return (
@@ -66,12 +87,17 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  className="signup-input full-width"
+                  className={`signup-input full-width ${
+                    errors.email ? "input-error" : ""
+                  }`}
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                 />
+                {errors.email && (
+                  <p className="input-error-text">Invalid email format.</p>
+                )}
               </div>
               <div className="signup-field">
                 <label htmlFor="username" className="signup-label">
@@ -84,7 +110,7 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                   className="signup-input full-width"
                   value={formData.username}
                   onChange={(e) =>
-                    setFormData({ ...formData, userName: e.target.value })
+                    setFormData({ ...formData, username: e.target.value })
                   }
                 />
               </div>
@@ -108,11 +134,20 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                   type="password"
                   placeholder="Confirm Password"
                   className="signup-input full-width"
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({ ...formData, confirmPassword: e.target.value })
+                  }
                 />
+                {errors.passwordMismatch && (
+                  <p className="input-error-text">Passwords do not match.</p>
+                )}
               </div>
 
               <div className="signup-next">
-                <button type="submit">Next</button>
+                <button type="submit" disabled={!isValid}>
+                  Next
+                </button>
                 <div className="login-redirect">
                   <p>Already have an account?</p>
                   <Link to="/login" className="login-link">

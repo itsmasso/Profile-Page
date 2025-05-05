@@ -7,13 +7,14 @@ const SignupWizard = () => {
     const [formData, setFormData] = useState({
         username: '',
         password:'',
+        confirmPassword: '',
         email: '',
         firstName: '',
         lastName: '',
         birthday: '',
         biography: '',
         favoriteNumber: '',
-        profilePicture: null,
+        //profilePicture: null,
 })
 
   return (
