@@ -3,27 +3,41 @@ import "./Login.css";
 import { Link } from "react-router";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Login = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [isValid, setIsValid] = useState(false);
+  const [error, setError] = useState({
+    invalidCredentials: false,
+  });
+
+  useEffect(() => {
+    const allCredentialsFilled = username && password;
+    setIsValid(allCredentialsFilled);
+  }, [username, password]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3001/login", {
+    try {
+      const result = await axios.post("http://localhost:3001/login", {
         username,
         password,
-      })
-      .then((result) => {
-        console.log(result);
-        if (result.data === "Success") {
-          navigate("/home");
-        }
-      })
-      .catch((err) => console.log(err));
+      });
+      console.log(result);
+      if (result.data.status === "Success") {
+        navigate("/home");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setError({ invalidCredentials: true });
+      } else {
+        console.error("Login error: ", err);
+      }
+    }
   };
   return (
     <section className="login-wrapper">
@@ -36,26 +50,41 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
               <fieldset className="login-grid">
                 <div className="login-field">
-                  <h2>Username</h2>
+                  <label htmlFor="username" className="login-label">
+                    Username
+                  </label>
                   <input
+                    id="username"
                     type="text"
+                    name="username"
                     placeholder="Username"
                     className="login-input full-width"
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
                 <div className="login-field">
-                  <h2>Password</h2>
+                  <label htmlFor="password" className="login-label">
+                    Password
+                  </label>
                   <input
+                    id="password"
                     type="password"
+                    name="password"
                     placeholder="Password"
                     className="login-input full-width"
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  {error.invalidCredentials && (
+                    <p className="input-error-text">
+                      Invalid username or password.
+                    </p>
+                  )}
                 </div>
               </fieldset>
               <div className="login-submit">
-                <button type="submit">Sign in</button>
+                <button type="submit" disabled={!isValid}>
+                  Sign in
+                </button>
               </div>
             </form>
           </main>

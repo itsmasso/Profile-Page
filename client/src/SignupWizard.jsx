@@ -14,7 +14,7 @@ const SignupWizard = () => {
         birthday: '',
         biography: '',
         favoriteNumber: '',
-        //profilePicture: null,
+        profilePicture: '',
 })
 
   return (

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./SignupStep1.css";
 import { Link } from "react-router";
+import axios from "axios";
 
 const Signup = ({ formData, setFormData, nextStep }) => {
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
-    email: false,
+    invalidEmail: false,
+    emailInUse: false,
+    usernameInUse: false,
     passwordMismatch: false,
   });
 
@@ -15,17 +18,41 @@ const Signup = ({ formData, setFormData, nextStep }) => {
     setIsValid(allFilled);
   }, [formData]);
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
+    const { email, username, password, confirmPassword } = formData;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isEmailValid = emailRegex.test(formData.email);
-    const isPasswordMatching = formData.password === formData.confirmPassword;
+    const emailHasError = !emailRegex.test(formData.email);
+    const passwordMismatchError = password !== confirmPassword;
     setErrors({
-      email: !isEmailValid,
-      passwordMismatch: !isPasswordMatching,
+      invalidEmail: emailHasError,
+      passwordMismatch: passwordMismatchError,
+      emailInUse: false,
+      usernameInUse: false,
     });
-    if (isEmailValid && isPasswordMatching) {
+    if (emailHasError || passwordMismatchError) return;
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/register/first-step",
+        {
+          username,
+          email,
+        }
+      );
+
+      if (result.data.status === "Email exists") {
+        setErrors((prev) => ({ ...prev, emailInUse: true }));
+        return;
+      }
+
+      if (result.data.status === "Username exists") {
+        setErrors((prev) => ({ ...prev, usernameInUse: true }));
+        return;
+      }
+
       nextStep();
+    } catch (err) {
+      console.error("Error checking user info:", err);
     }
   };
 
@@ -53,6 +80,7 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                     First Name
                   </label>
                   <input
+                    id="firstName"
                     type="text"
                     name="firstName"
                     placeholder="First Name"
@@ -68,6 +96,7 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                     Last Name
                   </label>
                   <input
+                    id="lastName"
                     type="text"
                     name="lastName"
                     placeholder="Last Name"
@@ -84,26 +113,32 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                   Email
                 </label>
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   placeholder="Email"
                   className={`signup-input full-width ${
-                    errors.email ? "input-error" : ""
+                    errors.invalidEmail ? "input-error" : ""
                   }`}
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                 />
-                {errors.email && (
+                {errors.invalidEmail ? (
                   <p className="input-error-text">Invalid email format.</p>
-                )}
+                ) : errors.emailInUse ? (
+                  <p className="input-error-text">
+                    This email is already in use.
+                  </p>
+                ) : null}
               </div>
               <div className="signup-field">
                 <label htmlFor="username" className="signup-label">
                   Username
                 </label>
                 <input
+                  id="username"
                   type="username"
                   name="username"
                   placeholder="Username"
@@ -113,12 +148,14 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                     setFormData({ ...formData, username: e.target.value })
                   }
                 />
+                {errors.usernameInUse && (<p className="input-error-text">This username is already taken.</p>)}
               </div>
               <div className="signup-field">
                 <label htmlFor="password" className="signup-label">
                   Password
                 </label>
                 <input
+                  id="password"
                   type="password"
                   name="password"
                   placeholder="Password"
@@ -131,12 +168,16 @@ const Signup = ({ formData, setFormData, nextStep }) => {
               </div>
               <div className="signup-field">
                 <input
+                  id="confirmPassword"
                   type="password"
                   placeholder="Confirm Password"
                   className="signup-input full-width"
                   value={formData.confirmPassword}
                   onChange={(e) =>
-                    setFormData({ ...formData, confirmPassword: e.target.value })
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
                   }
                 />
                 {errors.passwordMismatch && (

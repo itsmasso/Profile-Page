@@ -6,40 +6,33 @@ import { useNavigate } from "react-router";
 
 const Signup = ({ formData, setFormData, previousStep }) => {
   const navigate = useNavigate();
-  const {
-    username,
-    password,
-    confirmPassword,
-    email,
-    firstName,
-    lastName,
-    birthday,
-    biography,
-    favoriteNumber,
-    //profilePicture,
-  } = formData;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("username", formData.username);
+    data.append("password", formData.password);
+    //data.append("confirmPassword", formData.confirmPassword);
+    data.append("email", formData.email);
+    data.append("firstName", formData.firstName);
+    data.append("lastName", formData.lastName);
+    data.append("birthday", formData.birthday);
+    data.append("biography", formData.biography);
+    data.append("favoriteNumber", formData.favoriteNumber);
+    data.append("profilePicture", formData.profilePicture);
+
     try {
-      const result = await axios.post("http://localhost:3001/register", {
-        username,
-        password,
-        confirmPassword,
-        email,
-        firstName,
-        lastName,
-        birthday,
-        biography,
-        favoriteNumber,
-        //profilePicture,
+      const result = await axios.post("http://localhost:3001/register/second-step", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log(result);
+      console.log(result.data);
       navigate("/login");
     } catch (err) {
       console.log(err);
     }
   };
-
   const handlePrevious = (e) => {
     e.preventDefault();
     previousStep();
@@ -68,6 +61,7 @@ const Signup = ({ formData, setFormData, previousStep }) => {
               </label>
               <div className="signup-field">
                 <input
+                  id="birthdate"
                   type="date"
                   name="birthdate"
                   className="signup-input full-width"
@@ -82,6 +76,7 @@ const Signup = ({ formData, setFormData, previousStep }) => {
                   Biography
                 </label>
                 <textarea
+                  id="biography"
                   type="text"
                   name="biography"
                   placeholder="Tell us about yourself..."
@@ -99,12 +94,16 @@ const Signup = ({ formData, setFormData, previousStep }) => {
                   Favorite Number
                 </label>
                 <input
+                  id="favoriteNumber"
                   type="text"
                   name="favoriteNumber"
                   placeholder="Favorite Number"
                   className="signup-input full-width"
                   onChange={(e) =>
-                    setFormData({ ...formData, favoriteNumber: e.target.value })
+                    setFormData({
+                      ...formData,
+                      favoriteNumber: e.target.value,
+                    })
                   }
                 />
               </div>
@@ -113,6 +112,7 @@ const Signup = ({ formData, setFormData, previousStep }) => {
                   Profile Picture
                 </label>
                 <input
+                  id="profilePicture"
                   type="file"
                   name="profilePicture"
                   accept="image/jpeg,image/jpg"
