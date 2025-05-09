@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./SignupStep1.css";
 import { Link } from "react-router";
-import axios from "axios";
 
 const Signup = ({ formData, setFormData, nextStep }) => {
   const [isValid, setIsValid] = useState(false);
@@ -32,21 +31,24 @@ const Signup = ({ formData, setFormData, nextStep }) => {
     });
     if (emailHasError || passwordMismatchError) return;
     try {
-      const reponse = await axios.post(
+      const response = await fetch(
         "http://localhost:3001/api/users/register/first-step",
         {
-          username,
-          email,
-        },
-        {
-          withCredentials: true,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ username, email }),
         }
       );
 
-      if (!reponse.data.success) {
-        if (reponse.data.message === "Email already exists.") {
+      const data = await response.json();
+
+      if (!data.success) {
+        if (data.message === "Email already exists.") {
           setErrors((prev) => ({ ...prev, emailInUse: true }));
-        } else if (reponse.data.message === "Username already exists.") {
+        } else if (data.message === "Username already exists.") {
           setErrors((prev) => ({ ...prev, usernameInUse: true }));
         }
         return;

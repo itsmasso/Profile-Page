@@ -4,10 +4,11 @@ import { checkAuth } from "../userAuthUtil.js";
 import { useNavigate } from "react-router";
 import EditProfileContainer from "./EditProfileContainer.jsx";
 import ProfileContainer from "./ProfileContainer.jsx";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 const EditProfile = () => {
   const [user, setUser] = useState(null);
-  const [editProfile, setEditProfile] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,12 +22,43 @@ const EditProfile = () => {
     };
     verify();
   }, []);
+  const handleProfilePicChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+
+    try {
+      const res = await fetch(
+        "http://localhost:3001/api/users/update-profile-picture",
+        {
+          method: "PUT",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        setUser(data.user); // update user with new profilePicturePath
+      } else {
+        console.error("Upload failed:", data.message);
+      }
+    } catch (err) {
+      console.error("Error uploading profile picture:", err);
+    }
+  };
   return (
     <main className="dashboard-wrapper">
       <div className="dashboard-container">
+        <h1>Profile Settings</h1>
         <div className="edit-container">
-          <div className="edit-container-pic">
+          <button
+            className="edit-profile-pic-button"
+            onClick={() => document.getElementById("profilePicInput").click()}
+          >
+            <FontAwesomeIcon icon={faCamera} className="camera-icon" />
             <img
               src={
                 user?.profilePicturePath
@@ -38,8 +70,26 @@ const EditProfile = () => {
               }
               alt="Profile"
             />
-          </div>
-          <ProfileContainer/>
+          </button>
+          <input
+            type="file"
+            id="profilePicInput"
+            accept="image/jpeg,image/jpg"
+            style={{ display: "none" }}
+            onChange={handleProfilePicChange}
+          />
+          {isEditing ? (
+            <EditProfileContainer
+              user={user}
+              setUser={setUser}
+              onEditClick={() => setIsEditing(false)}
+            />
+          ) : (
+            <ProfileContainer
+              user={user}
+              onEditClick={() => setIsEditing(true)}
+            />
+          )}
         </div>
       </div>
     </main>

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.css";
 import { Link } from "react-router";
-import axios from "axios";
+
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
@@ -23,22 +23,26 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/api/users/login", {
-        username,
-        password,
-      }, {
-        withCredentials: true,
+      const response = await fetch("http://localhost:3001/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", 
+        body: JSON.stringify({ username, password }),
       });
-      console.log(response);
-      if (response.data.success) {
+
+      const data = await response.json();
+
+      if (response.status === 200 && data.success) {
         navigate("/home");
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
+      } else if (response.status === 401) {
         setError({ invalidCredentials: true });
       } else {
-        console.error("Login error: ", err);
+        console.error("Login error:", data.message || "Unexpected error");
       }
+    } catch (err) {
+      console.error("Login error:", err);
     }
   };
   return (

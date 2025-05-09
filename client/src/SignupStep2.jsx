@@ -1,7 +1,6 @@
 import React from "react";
 import "./SignupStep2.css";
 import { Link } from "react-router";
-import axios from "axios";
 import { useNavigate } from "react-router";
 
 const Signup = ({ formData, setFormData, previousStep }) => {
@@ -12,7 +11,6 @@ const Signup = ({ formData, setFormData, previousStep }) => {
     const data = new FormData();
     data.append("username", formData.username);
     data.append("password", formData.password);
-    //data.append("confirmPassword", formData.confirmPassword);
     data.append("email", formData.email);
     data.append("firstName", formData.firstName);
     data.append("lastName", formData.lastName);
@@ -22,16 +20,25 @@ const Signup = ({ formData, setFormData, previousStep }) => {
     data.append("profilePicture", formData.profilePicture);
 
     try {
-      const reponse = await axios.post("http://localhost:3001/api/users/register/second-step", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
-      console.log(reponse.data);
-      navigate("/login");
+      const response = await fetch(
+        "http://localhost:3001/api/users/register/second-step",
+        {
+          method: "POST",
+          credentials: "include",
+          body: data, 
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        console.log(result);
+        navigate("/login");
+      } else {
+        console.error("Registration error:", result.message);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Error submitting form:", err);
     }
   };
   const handlePrevious = (e) => {

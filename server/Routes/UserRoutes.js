@@ -130,6 +130,7 @@ router.get("/user-profile", userAuth, async (req, res) => {
 
     const {
       username,
+      password,
       email,
       firstName,
       lastName,
@@ -141,6 +142,7 @@ router.get("/user-profile", userAuth, async (req, res) => {
 
     res.json({
       username,
+      password,
       email,
       firstName,
       lastName,
@@ -154,4 +156,57 @@ router.get("/user-profile", userAuth, async (req, res) => {
   }
 });
 
+router.put("/edit-profile", userAuth, async (req, res) => {
+  const { username, email } = req.body;
+  try {
+    const updates = req.body;
+    const existingUser = await UsersModel.findOne({ username });
+    const existingEmail = await UsersModel.findOne({ email });
+    if (existingEmail && existingEmail._id.toString() !== req.user.id) {
+      return res
+        .status(409)
+        .json({ success: false, message: "Email already exists." });
+    }
+
+    if (existingUser && existingUser._id.toString() !== req.user.id) {
+      return res
+        .status(409)
+        .json({ success: false, message: "Username already exists." });
+    }
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
+
+    const updatedUser = await UsersModel.findByIdAndUpdate(
+      req.user.id,
+      { $set: updates },
+      { new: true }
+    );
+
+    res.json({ success: true, user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+router.put(
+  "/update-profile-picture",
+  userAuth,
+  uploads.single("profilePicture"),
+  async (req, res) => {
+    try {
+      const user = await UsersModel.findById(req.user.id);
+      if (!user)
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found" });
+
+      user.profilePicturePath = req.file.path;
+      await user.save();
+
+      res.json({ success: true, user });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  }
+);
 export default router;

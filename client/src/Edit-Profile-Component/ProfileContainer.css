@@ -1,6 +1,6 @@
 .profile-info-wrapper {
   display: flex;
-  width: 40%;
+  width: 55%;
   flex-direction: column;
   gap: 2rem;
 }
@@ -8,29 +8,39 @@
 .profile-container-wrapper {
   display: flex;
 
-  align-items: center;
   justify-content: space-between;
   gap: 6rem;
 }
 
-.profile-container-right {
-  display: flex;
-  flex-direction: column;
-}
+.profile-container-right,
 .profile-container-left {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  
+  width: 100%;
+  min-width: 0;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
   font-weight: bold;
+
+  font-size: 1.1rem;
+  white-space: normal;
+}
+
+.bio-text {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .bottom-buttons {
@@ -38,7 +48,6 @@
   align-items: center;
   gap: 1rem;
   justify-content: flex-end;
-  margin-right: -13px;
 }
 
 .edit-button {
