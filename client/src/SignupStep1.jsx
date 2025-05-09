@@ -32,21 +32,23 @@ const Signup = ({ formData, setFormData, nextStep }) => {
     });
     if (emailHasError || passwordMismatchError) return;
     try {
-      const result = await axios.post(
-        "http://localhost:3001/register/first-step",
+      const reponse = await axios.post(
+        "http://localhost:3001/api/users/register/first-step",
         {
           username,
           email,
+        },
+        {
+          withCredentials: true,
         }
       );
 
-      if (result.data.status === "Email exists") {
-        setErrors((prev) => ({ ...prev, emailInUse: true }));
-        return;
-      }
-
-      if (result.data.status === "Username exists") {
-        setErrors((prev) => ({ ...prev, usernameInUse: true }));
+      if (!reponse.data.success) {
+        if (reponse.data.message === "Email already exists.") {
+          setErrors((prev) => ({ ...prev, emailInUse: true }));
+        } else if (reponse.data.message === "Username already exists.") {
+          setErrors((prev) => ({ ...prev, usernameInUse: true }));
+        }
         return;
       }
 
@@ -148,7 +150,11 @@ const Signup = ({ formData, setFormData, nextStep }) => {
                     setFormData({ ...formData, username: e.target.value })
                   }
                 />
-                {errors.usernameInUse && (<p className="input-error-text">This username is already taken.</p>)}
+                {errors.usernameInUse && (
+                  <p className="input-error-text">
+                    This username is already taken.
+                  </p>
+                )}
               </div>
               <div className="signup-field">
                 <label htmlFor="password" className="signup-label">

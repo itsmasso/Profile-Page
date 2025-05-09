@@ -23,12 +23,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("http://localhost:3001/api/users/login", {
         username,
         password,
+      }, {
+        withCredentials: true,
       });
-      console.log(result);
-      if (result.data.status === "Success") {
+      console.log(response);
+      if (response.data.success) {
         navigate("/home");
       }
     } catch (err) {

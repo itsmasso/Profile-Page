@@ -22,12 +22,13 @@ const Signup = ({ formData, setFormData, previousStep }) => {
     data.append("profilePicture", formData.profilePicture);
 
     try {
-      const result = await axios.post("http://localhost:3001/register/second-step", data, {
+      const reponse = await axios.post("http://localhost:3001/api/users/register/second-step", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
-      console.log(result.data);
+      console.log(reponse.data);
       navigate("/login");
     } catch (err) {
       console.log(err);

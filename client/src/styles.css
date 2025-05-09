@@ -1,1 +1,14 @@
 @import "tailwindcss";
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body{
+    height: 100vh;
+    color: black;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.1px;
+  }  
+
