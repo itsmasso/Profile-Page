@@ -62,7 +62,7 @@ const Navbar = ({ user, setUser }) => {
                 <img
                   src={
                     user?.profilePicturePath
-                      ? `http://localhost:3001/${user.profilePicturePath.replace(
+                      ? `${import.meta.env.VITE_API_URL}/${user.profilePicturePath.replace(
                           /\\/g,
                           "/"
                         )}`
