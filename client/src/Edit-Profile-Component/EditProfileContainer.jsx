@@ -73,6 +73,7 @@ const EditProfileContainer = ({ user, setUser, onEditClick }) => {
         }
         return;
       }
+
       console.log("Updated:", data);
       setUser(data.user);
       onEditClick();

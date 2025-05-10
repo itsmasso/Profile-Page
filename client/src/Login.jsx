@@ -1,11 +1,9 @@
 import React from "react";
 import "./Login.css";
-import { Link } from "react-router";
-
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useState, useEffect } from "react";
-
-const Login = () => {
+import { checkAuth } from "./userAuthUtil";
+const Login = ({setUser}) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
@@ -35,6 +33,8 @@ const Login = () => {
       const data = await response.json();
 
       if (response.status === 200 && data.success) {
+        const userData = await checkAuth();
+        setUser(userData);
         navigate("/home");
       } else if (response.status === 401) {
         setError({ invalidCredentials: true });

@@ -11,51 +11,16 @@
   width: 100%;
   height: 82%;
   background: linear-gradient(
-    to right,
-    #fce5a1 0%,
-    #f8b48c 30%,
-    #e0c2f0 70%,
-    #d3b0eb 100%
+  135deg,
+  #ff6b3d 0%,    
+  #ff5e5b 25%, 
+  #ff7b89 55%,  
+  #ffa07a 80%,  
+  #ffd1a1 100%   
   );
 }
 
-.navbar {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: transparent;
-  padding: 0.6rem 0.9rem;
-  color: white;
-}
 
-.navbar-links {
-  list-style: none;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-profile-button {
-  width: 60px;
-  height: 60px;
-  padding: 0.35rem 0.35rem;
-  border-radius: 50%;
-  background-color: transparent;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  overflow: hidden;
-}
-.nav-profile-button:hover {
-  background-color: rgba(148, 148, 148, 0.13);
-}
-
-.nav-profile-button img {
-  object-fit: cover;
-  background-color: #b9b9b9;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
 .right-buttons {
   display: flex;
   align-items: center;

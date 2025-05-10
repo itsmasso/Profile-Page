@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./EditProfile.css";
-import { checkAuth } from "../userAuthUtil.js";
-import { useNavigate } from "react-router";
 import EditProfileContainer from "./EditProfileContainer.jsx";
 import ProfileContainer from "./ProfileContainer.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-const EditProfile = () => {
-  const [user, setUser] = useState(null);
+
+const EditProfile = ({user, setUser}) => {
+
   const [isEditing, setIsEditing] = useState(false);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    const verify = async () => {
-      try {
-        const userData = await checkAuth();
-        setUser(userData);
-      } catch {
-        navigate("/login");
-      }
-    };
-    verify();
-  }, []);
   const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;

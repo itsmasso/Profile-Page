@@ -1,7 +1,6 @@
 import React from "react";
 import "./SignupStep2.css";
-import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 const Signup = ({ formData, setFormData, previousStep }) => {
   const navigate = useNavigate();
@@ -133,13 +132,13 @@ const Signup = ({ formData, setFormData, previousStep }) => {
                   }
                 />
               </div>
-              <div className="signup-checkbox">
+              {/* <div className="signup-checkbox">
                 <input type="checkbox" id="terms" />
                 <label htmlFor="terms">
                   I accept the <a href="#">Terms of Use</a> &{" "}
                   <a href="#">Privacy Policy</a>
                 </label>
-              </div>
+              </div> */}
               <div className="signup-submit">
                 <div className="submit-button-wrapper">
                   <button type="button" onClick={handlePrevious}>

@@ -24,7 +24,14 @@
 }
 .signup-left {
   flex: 1;
-  background: #3b82f6;
+  background: linear-gradient(
+    135deg,
+    #ff6b3d 0%,    
+    #ff5e5b 25%, 
+    #ff7b89 55%,  
+    #ffa07a 80%,  
+    #ffd1a1 100%   
+  );
   color: white;
   padding: 3rem;
   display: flex;
@@ -79,7 +86,7 @@
   cursor: pointer;
 }
 .signup-input-file::-webkit-file-upload-button {
-  background: #3b82f6;
+  background: #ff475f;
   color: white;
   padding: 0.4rem 1rem;
   border: none;
@@ -89,18 +96,19 @@
 .full-width {
   width: 100%;
 }
-.signup-checkbox {
+/* .signup-checkbox {
   display: flex;
   gap: 0.5rem;
   margin-top: 1.25rem;
   font-size: 0.875rem;
   align-items: center;
+
 }
 .signup-checkbox a {
-  color: #3b82f6;
+  color: #ff475f;
   font-weight: 600;
   text-decoration: none;
-}
+} */
 .signup-submit {
   margin-top: 1.25rem;
   display: flex;
@@ -117,20 +125,36 @@
 }
 .submit-button-wrapper button {
   flex: 1;
-  background: #3b82f6;
+  background: #ff475f;
   color: white;
   padding: 0.75rem;
   border: none;
   cursor: pointer;
 }
 
+.submit-button-wrapper button:hover {
+  background: #ff949f;
+}
+
+.submit-button-wrapper button:active {
+  background: #e65261;
+  transform: scale(0.97);
+}
 .login-redirect {
   display: flex;
   gap: 0.25rem;
 }
 
 .login-link {
-  color: #3b82f6;
+    background: linear-gradient(
+    to right,
+    #ff4d4d 0%,
+    #ff7180 100% 
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   font-weight: 600;
   text-decoration: none;
 }

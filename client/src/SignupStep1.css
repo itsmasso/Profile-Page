@@ -24,7 +24,14 @@
 }
 .signup-left {
   flex: 1;
-  background: #3b82f6;
+  background: linear-gradient(
+    135deg,
+    #ff6b3d 0%,    
+    #ff5e5b 25%, 
+    #ff7b89 55%,  
+    #ffa07a 80%,  
+    #ffd1a1 100%   
+  );
   color: white;
   padding: 3rem;
   display: flex;
@@ -83,11 +90,20 @@
 }
 .signup-next button {
   width: 100%;
-  background: #3b82f6;
+  background: #ff7180;
   color: white;
   padding: 0.75rem;
   border: none;
   cursor: pointer;
+}
+
+.signup-next button:hover {
+  background: #ff949f;
+}
+
+.signup-next button:active {
+  background: #e65261;
+  transform: scale(0.97);
 }
 .signup-next button:disabled {
   background-color: #9ca3af;
@@ -101,7 +117,7 @@
 }
 
 .login-link {
-  color: #3b82f6;
+  color: #ff7180;
   font-weight: 600;
   text-decoration: none;
 }
