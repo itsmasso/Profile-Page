@@ -18,7 +18,7 @@ const EditProfile = ({user, setUser}) => {
 
     try {
       const res = await fetch(
-        "http://localhost:3001/api/users/update-profile-picture",
+        `${import.meta.env.VITE_API_URL}/api/users/update-profile-picture`,
         {
           method: "PUT",
           credentials: "include",
@@ -49,7 +49,7 @@ const EditProfile = ({user, setUser}) => {
             <img
               src={
                 user?.profilePicturePath
-                  ? `http://localhost:3001/${user.profilePicturePath.replace(
+                  ? `${import.meta.env.VITE_API_URL}/${user.profilePicturePath.replace(
                       /\\/g,
                       "/"
                     )}`

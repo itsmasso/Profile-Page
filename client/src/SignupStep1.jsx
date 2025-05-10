@@ -32,7 +32,7 @@ const Signup = ({ formData, setFormData, nextStep }) => {
     if (emailHasError || passwordMismatchError) return;
     try {
       const response = await fetch(
-        "http://localhost:3001/api/users/register/first-step",
+        `${import.meta.env.VITE_API_URL}/api/users/register/first-step`,
         {
           method: "POST",
           headers: {

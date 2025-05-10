@@ -52,7 +52,7 @@ const EditProfileContainer = ({ user, setUser, onEditClick }) => {
       if (emailHasError) return;
 
       const response = await fetch(
-        "http://localhost:3001/api/users/edit-profile",
+        `${import.meta.env.VITE_API_URL}/api/users/edit-profile`,
         {
           method: "PUT",
           headers: {
