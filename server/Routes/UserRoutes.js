@@ -1,7 +1,7 @@
 import express from "express";
 import UsersModel from "../Models/Users.js";
 import multer from "multer";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userAuth from "../middlewares/userAuth.js";
 
