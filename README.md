@@ -1,7 +1,9 @@
 # Profile Page Web App
 
-A full-stack user profile management app built with React, Node.js, and MongoDB.
+A simple full-stack user profile management app built with React, Node.js, and MongoDB.
+Test the deployed link here: https://profile-page-wine.vercel.app/login
 
+If you really want to test locally, follow these instructions:
 ## Local Setup Instructions
 
 1. **Requirements**:
