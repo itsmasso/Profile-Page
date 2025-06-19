@@ -4,7 +4,7 @@ A simple full-stack user profile management app built with React, Node.js, and M
 
 Test the deployed link here: https://profile-page-wine.vercel.app/login
 - **⚠️ Note:**
-  The free Render app may take 10–30 seconds to wake up after inactivity.
+  The backend is hosted on Render, and their free plan spins down after inactivity. Please wait 10–30 seconds for it to wake up.
 If you really want to test locally, follow these instructions:
 ## Local Setup Instructions
 
